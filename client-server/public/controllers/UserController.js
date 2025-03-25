@@ -45,17 +45,17 @@ class UserController {
 
           user.loadFromJSON(result);
 
-          user.save();
+          user.save().then((user) => {
+            this.getTr(user, tr);
 
-          this.getTr(user, tr);
+            this.updateCount();
 
-          this.updateCount();
+            this.formUpdateEl.reset();
 
-          this.formUpdateEl.reset();
+            btn.disabled = false;
 
-          btn.disabled = false;
-
-          this.showPanelCreate();
+            this.showPanelCreate();
+          });
         },
         (e) => {
           console.error(e);
@@ -80,13 +80,13 @@ class UserController {
         (content) => {
           values.photo = content;
 
-          values.save();
+          values.save().then((user) => {
+            this.addLine(user);
 
-          this.addLine(values);
+            this.formEl.reset();
 
-          this.formEl.reset();
-
-          btn.disabled = false;
+            btn.disabled = false;
+          });
         },
         (e) => {
           console.error(e);
@@ -173,22 +173,6 @@ class UserController {
         this.addLine(user);
       });
     });
-
-    // let ajax = new XMLHttpRequest();
-
-    // ajax.open('GET', '/users');
-
-    // ajax.onload = (event) => {
-    //   let obj = { users: [] };
-
-    //   try {
-    //     obj = JSON.parse(ajax.responseText);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // ajax.send();
   }
 
   addLine(dataUser) {
